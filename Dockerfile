@@ -17,4 +17,8 @@ COPY . /app
 EXPOSE 8080
 
 # Rodar o app streamlit
+<<<<<<< HEAD
 CMD ["streamlit", "run", "intranet_deise.py", "--server.port=8080", "--server.address=0.0.0.0"]
+=======
+CMD ["streamlit", "run", "intranet_deise.py", "--server.port=8080", "--server.address=0.0.0.0"]
+>>>>>>> c72e6415590e33efb3b45f6584b9dd1d835a8704
