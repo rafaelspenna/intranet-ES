@@ -5,40 +5,16 @@ from google.oauth2 import service_account
 from google.auth import default
 import pandas as pd
 from datetime import date
+from funcs.retrieve_data_despesas import load_data_despesas
 
 def despesas():
     st.title("💸 Despesas")
     st.write("Relatórios de despesas")
     
     vendedor = "vendasremape@gmail.com"
-
-    @st.cache_data(ttl=600)  # Cache os dados por 10 minutos
-    def load_data():
-        #Obtem credenciais(IAM do CLoud Run)
-        creds, _ = default(scopes=[
-            "https://www.googleapis.com/auth/spreadsheets.readonly",
-            "https://www.googleapis.com/auth/drive.readonly",
-        ])
-        
-        #Autorizaa ccom Gsppreead
-        client = gspread.authorize(creds)
-
-        #Acessa planilha e  a aba desejaada
-        sheet = client.open_by_key("1u1do3URWqU6_E9DAKenpm9F7BfKGw7sBNrtp0yxSwzk")
-        worksheet = sheet.worksheet("DESPESAS")
-
-        # Obtém os dados e converte para DataFrame
-        data = worksheet.get_all_values()
-        df = pd.DataFrame(data[1:], columns=data[0])  # Pula o cabeçalho na linha 0
-        df = df.dropna(how="all")  # Remove linhas completamente vazias
-        
-        # Conversão da coluna "DATA" para datetime
-        df['DATA'] = pd.to_datetime(df['DATA'], format="%d/%m/%Y", errors='coerce').dt.date
-
-        return df
     
     # Carrega os dados usando a função cacheada
-    df = load_data()
+    df = load_data_despesas()
 
     # Filtro data inicial e final
     data_inicial = st.date_input("Data Inicial", value=date.today())
